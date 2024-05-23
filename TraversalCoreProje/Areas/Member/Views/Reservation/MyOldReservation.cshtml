@@ -1,0 +1,42 @@
+﻿@model List<Reservation>
+@{
+    ViewData["Title"] = "MyOldReservation";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+@if (Model.Any())
+{
+    <h1>Geçmiş Rezervasyonlar</h1>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Lokasyon</th>
+            <th>Kişi Sayısı</th>
+            <th>Rezervasyon Tarihi</th>
+            <th>Durum</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ReservationID</td>
+                <td>@item.Destination.City</td>
+                <td>@item.PersonCount</td>
+                <td>@item.ReservationDate.ToString("dd.MM.yyyy")</td>
+                <td>@item.Status</td>
+            </tr>
+        }
+
+        </tbody>
+    </table>
+}
+else
+{
+    <span class="text-danger">Geçmiş randevunuz bulunmamaktadır.</span>
+}
+
+
+
+

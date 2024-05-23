@@ -1,0 +1,34 @@
+﻿@{
+    Layout = null;
+}
+<!doctype html>
+<html lang="en">
+@* @{
+    await Html.RenderPartialAsync("/Views/LayoutPartial/_HeaderPartial.cshtml");
+} *@
+    @await Html.PartialAsync("/Views/LayoutPartial/_HeaderPartial.cshtml")
+<body>
+    @{
+        await Html.RenderPartialAsync("/Views/LayoutPartial/_NavbarPartial.cshtml");
+    }
+    @RenderBody()
+
+    @{
+        await Html.RenderPartialAsync("/Views/LayoutPartial/_FooterPartial.cshtml");
+    }
+
+    @{
+        await Html.RenderPartialAsync("/Views/LayoutPartial/_ScriptsPartial.cshtml");
+    }
+
+</body>
+
+</html>
+
+
+   
+
+
+
+
+
