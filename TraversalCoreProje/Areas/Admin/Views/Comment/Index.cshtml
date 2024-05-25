@@ -21,7 +21,14 @@
             <td>@item.CommentUser</td>
             <td>@item.Destination.City</td>
             <td>@item.CommentDate.ToString("dd.MM.yyyy")</td>
-            <td><a href="/Admin/Comment/DeleteComment/@item.CommentID" class="btn btn-outline-danger">Sil</a></td>
+            <td><a href="/Admin/Comment/DeleteComment/@item.CommentID" onclick="return confirm('Silmek istediğinden emin misin?')" class="btn btn-outline-danger">Sil</a></td>
         </tr>
     }
 </table>
+<script>
+    function clicked(e) {
+        if (!confirm('Silmek istediğinden emin misin?')) {
+            e.preventDefault();
+        }
+    }
+</script> 

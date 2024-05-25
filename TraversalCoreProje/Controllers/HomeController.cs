@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using TraversalCoreProje.Models;
 
 namespace TraversalCoreProje.Controllers
 {
+    [AllowAnonymous]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -15,11 +17,13 @@ namespace TraversalCoreProje.Controllers
 
         public IActionResult Index()
         {
+            _logger.LogInformation("Index Sayfası Çağrıldı");
             return View();
         }
 
         public IActionResult Privacy()
         {
+            _logger.LogInformation("Private Sayfası Çağrıldı");
             return View();
         }
 

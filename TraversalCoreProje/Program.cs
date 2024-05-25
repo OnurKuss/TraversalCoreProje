@@ -1,5 +1,6 @@
 using BusinessLayer.Abstract;
 using BusinessLayer.Concrete;
+using BusinessLayer.Container;
 using DataAccessLayer.Abstract;
 using DataAccessLayer.Concrete;
 using DataAccessLayer.EntityFramework;
@@ -16,22 +17,29 @@ builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<Contex
     .AddErrorDescriber<CustomIdentityValidator>().AddEntityFrameworkStores<Context>();
 
 
-builder.Services.AddScoped<ICommentService, CommentManager>();
-builder.Services.AddScoped<ICommentDal, EfCommentDal>();
+builder.Services.ContainerDependencies();
 
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
 builder.Services.AddMvc(config =>
 {
-	var policy = new AuthorizationPolicyBuilder()
-		.RequireAuthenticatedUser()
-		.Build();
-	config.Filters.Add(new AuthorizeFilter(policy));
+    var policy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
+    config.Filters.Add(new AuthorizeFilter(policy));
 });
 
-builder.Services.AddMvc();
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Login/SignIn";
+});
 
-
+builder.Services.AddLogging(x =>
+{
+    x.ClearProviders();
+    x.SetMinimumLevel(LogLevel.Debug);
+    x.AddDebug();
+});
 
 
 var app = builder.Build();
@@ -43,6 +51,12 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+var loggerFactory = app.Services.GetRequiredService<ILoggerFactory>();
+var path = Directory.GetCurrentDirectory();
+loggerFactory.AddFile($"{path}\\Logs\\Log1.txt");
+
+app.UseStatusCodePagesWithReExecute("/ErrorPage/Error404", "?code={0}");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -57,20 +71,15 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllerRoute(
-        name: "areas",
-        pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
-    );
-});
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllerRoute(
-        name: "areas",
-        pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
-    );
-});
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+);
+
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+);
 
 app.Run();

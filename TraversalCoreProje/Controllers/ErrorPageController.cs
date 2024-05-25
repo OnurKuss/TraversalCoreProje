@@ -4,10 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace TraversalCoreProje.Controllers
 {
     [AllowAnonymous]
-    public class DefaultController : Controller
+    public class ErrorPageController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Error404(int code)
         {
+
             return View();
         }
     }

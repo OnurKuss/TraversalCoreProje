@@ -1,0 +1,36 @@
+﻿@model Guide
+@{
+    ViewData["Title"] = "EditGuide";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<h1>Rehber Düzenleme Sayfası</h1>
+<form method="post" asp-action="EditGuide" asp-controller="Guide">
+    <div class="form-group">
+        @Html.Label("Ad Soyad")
+        <input type="text" asp-for="Name" class="form-control" />
+    </div>
+    <br />
+    <div class="form-group">
+        @Html.Label("Rehber Fotoğraf")
+        <input type="text" asp-for="Image" class="form-control" />
+    </div>
+    <br />
+    <div class="form-group">
+        @Html.Label("Instagram Url")
+        <input type="text" asp-for="InstagramUrl" class="form-control" />
+    </div>
+    <br />
+    <div class="form-group">
+        @Html.Label("Twitter Url")
+        <input type="text" asp-for="TwitterUrl" class="form-control" />
+    </div>
+    <br />
+    <div class="form-group">
+        @Html.Label("Açıklama")
+        <textarea cols="30" rows="5" class="form-control" asp-for="Description"></textarea>
+    </div>
+    <br />
+    @Html.HiddenFor(x=> x.GuidID)
+    <button class="btn btn-outline-primary">Düzenle</button>
+</form>
+
