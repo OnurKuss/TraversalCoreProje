@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using EntityLayer.Concrete;
 
 namespace BusinessLayer.Abstract
 {
-    public interface IGuideService:IGenericService<Guide>
+    public interface IExcelService
     {
-        void ChangeToStatusGuide(int id);
+        byte[] ExcelList<T>(List<T> t) where T : class;
     }
 }

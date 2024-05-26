@@ -1,5 +1,7 @@
 ﻿using BusinessLayer.Abstract;
+using BusinessLayer.ValidationRules;
 using EntityLayer.Concrete;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TraversalCoreProje.Areas.Admin.Controllers
@@ -28,9 +30,24 @@ namespace TraversalCoreProje.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult AddGuide(Guide guide)
         {
-            guide.Status = true;
-            _guideService.TAdd(guide);
-            return RedirectToAction("Index");
+            GuideValidator validator = new GuideValidator();
+            ValidationResult validationResult = validator.Validate(guide);
+            if (validationResult.IsValid)
+            {
+                guide.Status = true;
+                _guideService.TAdd(guide);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                foreach (var item in validationResult.Errors)
+                {
+                    ModelState.AddModelError(item.PropertyName,item.ErrorMessage);
+                }
+
+                return View();
+            }
+          
         }
 
         [HttpGet]
@@ -46,18 +63,9 @@ namespace TraversalCoreProje.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult ChangeToTrue(int id)
-        {
-            var value = _guideService.TGetByID(id);
-            value.Status = true;
-            _guideService.TUpdate(value);
-            return RedirectToAction("Index");
-        }
-        public IActionResult ChangeToFalse(int id)
-        {
-            var value = _guideService.TGetByID(id);
-            value.Status = false;
-            _guideService.TUpdate(value);
+        public IActionResult ChangeToStatus(int id)
+        { 
+            _guideService.ChangeToStatusGuide(id);
             return RedirectToAction("Index");
         }
     }

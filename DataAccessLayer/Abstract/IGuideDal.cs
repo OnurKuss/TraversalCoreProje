@@ -9,5 +9,6 @@ namespace DataAccessLayer.Abstract
 {
     public interface IGuideDal: IGenericDal<Guide>
     {
+        void ChangeToStatusGuide(int id);
     }
 }

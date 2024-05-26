@@ -42,5 +42,10 @@ namespace BusinessLayer.Concrete
         {
             return _guideDal.GetByID(id);
         }
+
+        public void ChangeToStatusGuide(int id)
+        {
+            _guideDal.ChangeToStatusGuide(id);
+        }
     }
 }
